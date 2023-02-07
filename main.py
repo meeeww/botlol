@@ -2,7 +2,7 @@ import pyautogui
 import time
 import os
 import colorama
-from colorama import Back, Fore, Style
+from colorama import Fore
 colorama.init(autoreset=True)
 
 
@@ -11,22 +11,36 @@ colorama.init(autoreset=True)
 2. pip install Pillow --upgrade
 3. pip install pyautogui
 4. pip install colorama
+5. pip install pytesseract
+6. pip isntall tesseract
 
 auto-py-to-exe -> para hacer deploy de .exe
 
 """
-
-print("hello")
+import os
+os.startfile('C:\Program Files\Google\Chrome\Application\chrome.exe')
+print(Fore.GREEN + " # STARTING BOT...")
+# CREAR VARIABLES
 location = None
 chat_list = []
 directory = os.listdir()
-#imageChat = "Chat.PNG"
-#imageChatSecond = "Chat2.PNG"
-imageChatBubble = "Omar.PNG"
-print(Back.GREEN + " aqui")
-print(Fore.RED + " hey")
+imageExplorador = "Explorador.PNG"
 
+# CERRAR EXPLORADOR
+while (location == None):
+    try:
+        location = pyautogui.locateOnScreen(imageExplorador)
+    except Exception as e:
+        print(e)
 
+pyautogui.moveTo(location, duration=1)
+pyautogui.click()
+pyautogui.hotkey('alt', 'f4')
+location = None
+print(Fore.GREEN + " # CLOSED EXPLORER")
+time.sleep(5)
+
+"""
 for file in directory:
     if file.startswith('Ch'):
         chat_list.append(file)
@@ -64,3 +78,4 @@ time.sleep(1)
 pyautogui.write("Hola!!!")
 pyautogui.press('enter')
 location = None
+"""
