@@ -59,4 +59,65 @@ def conseguirEsencias():
     print(Fore.BLUE + " # BE: " + esencias)
 
 def crearLobby():
-    print("hola")
+    print(Fore.GREEN + " # CREATING LOBBY")
+    location = None
+    imagePlay = "./imagenes/lobby/play.PNG"
+    imageCoop = "./imagenes/lobby/coop.PNG"
+    imageIntermediate = "./imagenes/lobby/intermediate.PNG"
+    imageConfirm = "./imagenes/lobby/confirm.PNG"
+    imageFindMatch = "./imagenes/lobby/findmatch.PNG"
+    imageAccept = "./imagenes/lobby/accept.PNG"
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imagePlay, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imageCoop, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imageIntermediate, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imageConfirm, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imageFindMatch, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
+    while (location == None):
+        try:
+            location = py.locateOnScreen(imageAccept, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
