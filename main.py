@@ -1,16 +1,10 @@
 import os
 import json
-import os
 import funciones
 import time
-import time
-import os
 import pyautogui as py
 import pytesseract
 import re
-import colorama
-from colorama import Fore
-colorama.init(autoreset=True)
 import colorama
 from colorama import Fore
 colorama.init(autoreset=True)
