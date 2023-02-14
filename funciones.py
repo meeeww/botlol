@@ -18,7 +18,7 @@ def iniciarLeague(imagenRiot, usuario, imagenPass, contra, enCliente, location):
             try:
                 enCliente = True
                 print(Fore.RED + " # LAUNCHER NOT OPENED")
-                location = location = py.locateOnScreen(imagenRiot)
+                location = py.locateOnScreen(imagenRiot)
             except Exception as e:
                 print(e)
 
@@ -51,7 +51,7 @@ def conseguirEsencias():
             print(e)
 
     #time.sleep(5)
-    img = py.screenshot("test.png", region=(location.left, location.top, 100, 26))
+    img = py.screenshot(region=(location.left, location.top, 100, 30))
     py.screenshot(region=(location.left, location.top, 75, 26))
     pytesseract.pytesseract.tesseract_cmd = r'C:\Users\srjza\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
     esencias = pytesseract.image_to_string(img)
