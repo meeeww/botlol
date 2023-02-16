@@ -1,78 +1,99 @@
-import cv2 as cv
+import cv2
 import numpy as np
-from PIL import ImageGrab
 import pyautogui as py
+import math
+import time
 
-while True:
-    py.screenshot().save("hey.png")
-    screen = cv.imread('hey.png', cv.IMREAD_ANYCOLOR)
+def wait(segundos):
+    time.sleep(segundos)
 
-    jugador = cv.imread('imagenes/ingame/jugador.png', cv.IMREAD_ANYCOLOR)
-    enemigo = cv.imread('imagenes/ingame/enemigo.png', cv.IMREAD_ANYCOLOR)
+colorJugadorLower = np.array([22, 150, 20])
+colorJugadorUpper = np.array([25, 255, 255]) # jugador
+colorEnemigoLower = np.array([2, 130, 20])
+colorEnemigoUpper = np.array([5, 255, 255])# ENEMIGOS,
 
-    resultJugador = cv.matchTemplate(screen, jugador, cv.TM_CCOEFF_NORMED)
-    resultEnemigo = cv.matchTemplate(screen, enemigo, cv.TM_CCOEFF_NORMED)
+centroPantalla = (960, 540)
 
-    min_valJugador, max_valJugador, min_locJugador, max_locJugador = cv.minMaxLoc(resultJugador)
-    min_valEnemigo, max_valEnemigo, min_locEnemigo, max_locEnemigo = cv.minMaxLoc(resultEnemigo)
+img = cv2.imread("hey.png")
+global enemigosCoordenadas
+enemigosCoordenadas = []
+global jugadorCoordenada
+jugadorCoordenada = (1, 5)
 
+def jugador():
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorJugadorLower, colorJugadorUpper)
 
-    print("best match: " + str(min_valJugador))
-    print("second best: " + str(max_valJugador))
-    print("second 3: " + str(min_locJugador))
-    print("second 4: " + str(max_locJugador))
-    print("best match" + str(max_valJugador))
-    
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    encontrado = False
-
-    threshold = 0.8
-    if max_valJugador >= threshold:
-        print("found")
-
-        needle_w = jugador.shape[1]
-        needle_h = jugador.shape[0]
-
-        top_left = max_locJugador
-        bottom_right = ((top_left[0]) + needle_w, top_left[1] + needle_h + 163)
-
-        cv.rectangle(screen, top_left, bottom_right,
-                            color=(0, 255, 0), thickness=2, lineType=cv.LINE_4)
-        print(bottom_right[1] + 100)
-        
-        #cv.imshow("Result", screen)
-        #cv.waitKey()
-        encontrado = True
-    else:
-        print("holi")
-
-    if max_valEnemigo >= threshold:
-        print("found")
-
-        needle_w = enemigo.shape[1]
-        needle_h = enemigo.shape[0]
-
-        top_left = max_locEnemigo
-        bottom_right = ((top_left[0]) + needle_w, top_left[1] + needle_h + 163)
-
-        cv.rectangle(screen, top_left, bottom_right,
-                            color=(0, 0, 255), thickness=2, lineType=cv.LINE_4)
-        print(bottom_right[1] + 100)
-        
-        
-        encontrado = True
-    else:
-        print("holi")
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
+                global jugadorCoordenada
+                jugadorCoordenada = (x, y)
 
 
+def enemigo():
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorEnemigoLower, colorEnemigoUpper)
 
-    if encontrado == True:
-        cv.imshow("Result", screen)
-        cv.waitKey()
-#restar rectangulo 1 - rectangulo 2 para conseguir la distancia
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-#(737, 241, 163, 241)
-#box = cv.selectROI("selecionar", screen, fromCenter=False)
-#box = (737, 241, 163, 241)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 500:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)
+                global enemigosCoordenadas
+                enemigosCoordenadas.append([x, y])
 
+def atacarFuncion():
+    py.moveTo(aQuienAtacar)
+    py.rightClick()
+
+def kitear():
+    py.moveTo(centroPantalla[0] + 50, centroPantalla[1])
+    py.rightClick()
+    wait(0.5)
+    py.moveTo(centroPantalla[0] - 50, centroPantalla[1])
+    py.rightClick()
+
+jugador()
+enemigo()
+atacar = []
+enemigoDetectado = False
+print(enemigosCoordenadas)
+
+def inGame():
+    for coordenada in enemigosCoordenadas:
+        primerPuntoX = coordenada[0]
+        primerPuntoY = coordenada[1]
+        segundoPuntoX = jugadorCoordenada[0]
+        segundoPuntoY = jugadorCoordenada[1]
+
+        distancia = math.sqrt(math.pow((segundoPuntoX-primerPuntoX), 2) + math.pow((segundoPuntoY-primerPuntoY), 2))
+        print(str(distancia) + " distancia")
+        if distancia < (550*0.6):
+            cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 0), 2)
+            atacar.append([primerPuntoX + 50, primerPuntoY + 150, distancia])
+            enemigoDetectado = True
+        else:
+            cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
+
+    print(atacar)
+    maximo = 0
+    for distanciaEnemigo in atacar:
+        if(distanciaEnemigo[2] > maximo):
+            maximo = distanciaEnemigo[2]
+            aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
+
+    cv2.imshow("webcam", img)
+    cv2.waitKey()
+
+    wait(0.5)
+    while enemigoDetectado == False:
+        atacarFuncion()
+        kitear()
 

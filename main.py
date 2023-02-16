@@ -1,6 +1,7 @@
 import os
 import json
 import funciones as funciones
+import ingame as ingame
 import time
 import pyautogui as py
 import pytesseract
@@ -49,3 +50,6 @@ funciones.conseguirEsencias()
 #IR A LOBBY
 time.sleep(3)
 funciones.crearLobby()
+
+#IN GAME
+ingame.inGame()
