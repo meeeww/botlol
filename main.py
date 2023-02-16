@@ -39,6 +39,7 @@ imagenRiot = "./imagenes/singin/riot.png"
 enCliente = False
 
 # ABRIR LEAGUE
+'''
 print(Fore.GREEN + " # STARTING BOT...")
 time.sleep(1)
 funciones.iniciarLeague(imagenRiot, usuario, imagenPass, contra, enCliente, location)
@@ -50,6 +51,8 @@ funciones.conseguirEsencias()
 #IR A LOBBY
 time.sleep(3)
 funciones.crearLobby()
-
+'''
 #IN GAME
-ingame.inGame()
+for x in range(5):
+  ingame.inGame()
+    

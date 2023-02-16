@@ -7,12 +7,13 @@ import time
 def wait(segundos):
     time.sleep(segundos)
 
-colorJugadorLower = np.array([22, 150, 20])
+
+colorJugadorLower = np.array([20, 150, 20])
 colorJugadorUpper = np.array([25, 255, 255]) # jugador
 colorEnemigoLower = np.array([2, 130, 20])
 colorEnemigoUpper = np.array([5, 255, 255])# ENEMIGOS,
 
-centroPantalla = (960, 540)
+centroPantalla = (930, 500)
 
 img = cv2.imread("hey.png")
 global enemigosCoordenadas
@@ -28,7 +29,7 @@ def jugador():
 
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 500:
+            if cv2.contourArea(contour) > 300:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
                 global jugadorCoordenada
@@ -49,9 +50,6 @@ def enemigo():
                 global enemigosCoordenadas
                 enemigosCoordenadas.append([x, y])
 
-def atacarFuncion():
-    py.moveTo(aQuienAtacar)
-    py.rightClick()
 
 def kitear():
     py.moveTo(centroPantalla[0] + 50, centroPantalla[1])
@@ -60,13 +58,17 @@ def kitear():
     py.moveTo(centroPantalla[0] - 50, centroPantalla[1])
     py.rightClick()
 
-jugador()
-enemigo()
+
 atacar = []
 enemigoDetectado = False
-print(enemigosCoordenadas)
+#print(enemigosCoordenadas)
 
 def inGame():
+    
+    py.screenshot().save("hey.png")
+    aQuienAtacar = (0, 0)
+    jugador()
+    enemigo()
     for coordenada in enemigosCoordenadas:
         primerPuntoX = coordenada[0]
         primerPuntoY = coordenada[1]
@@ -74,26 +76,31 @@ def inGame():
         segundoPuntoY = jugadorCoordenada[1]
 
         distancia = math.sqrt(math.pow((segundoPuntoX-primerPuntoX), 2) + math.pow((segundoPuntoY-primerPuntoY), 2))
-        print(str(distancia) + " distancia")
+        #print(str(distancia) + " distancia")
         if distancia < (550*0.6):
             cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 0), 2)
             atacar.append([primerPuntoX + 50, primerPuntoY + 150, distancia])
-            enemigoDetectado = True
+            enemigoDetectado = False
         else:
             cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
 
-    print(atacar)
+    #print(atacar)
     maximo = 0
+    #aQuienAtacar = centroPantalla
     for distanciaEnemigo in atacar:
         if(distanciaEnemigo[2] > maximo):
             maximo = distanciaEnemigo[2]
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
+    
 
-    cv2.imshow("webcam", img)
-    cv2.waitKey()
-
+    #cv2.imshow("webcam", img)
+    #cv2.waitKey()
+    print("hmm")
     wait(0.5)
-    while enemigoDetectado == False:
-        atacarFuncion()
-        kitear()
-
+    #while enemigoDetectado == False:
+    #atacarFuncion()
+    print(aQuienAtacar)
+    py.moveTo(aQuienAtacar)
+    py.rightClick()
+    print("kitear")
+    kitear()
