@@ -1,10 +1,10 @@
 import cv2
 import numpy as np
 
-lower = np.array([20, 150, 20])
-upper = np.array([35, 255, 255]) # jugador
-#lower = np.array([0, 130, 20])
-#upper = np.array([20, 255, 255])# ENEMIGOS,
+#lower = np.array([20, 150, 20])
+#upper = np.array([35, 255, 255]) # jugador
+lower = np.array([0, 130, 20])
+upper = np.array([20, 255, 255])# ENEMIGOS,
 
 
 img = cv2.imread("hey.png")
