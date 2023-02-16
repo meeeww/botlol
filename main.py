@@ -1,6 +1,6 @@
 import os
 import json
-import funciones
+import funciones as funciones
 import time
 import pyautogui as py
 import pytesseract
