@@ -27,22 +27,23 @@ def inGameController():
     colorEnemigoUpper = np.array([3, 210, 206])# ENEMIGOS,
     colorMinionLower = np.array([0, 130, 100])
     colorMinionUpper = np.array([1, 145, 255])# MINIONS,
-    colorMinionAliadoLower = np.array([0, 130, 100])
-    colorMinionAliadoUpper = np.array([1, 145, 255])# MINIONS ALIADOS,
+    colorMinionAliadoLower = np.array([103, 160, 195])
+    colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
 
     global jugadorCoordenada
     global enemigosCoordenadas
 
-    enemigoDetectado = False
 
     atacar = []
     farmear = []
     enemigosCoordenadas = []
     minionsCoordenadas = []
-    minionsCoordenadasAliadas = 0
+    enemigosNumero = 0
+    minionsNumero = 0
+    minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
     #py.screenshot().save("hey.png")
-    img = cv2.imread("hey.png")
+    img = cv2.imread("hey2.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -69,7 +70,7 @@ def inGameController():
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)
                 enemigosCoordenadas.append([x, y])
-    
+
     for coordenada in enemigosCoordenadas:
         primerPuntoX = coordenada[0]
         primerPuntoY = coordenada[1]
@@ -81,7 +82,7 @@ def inGameController():
         if distancia < (525*0.6):
             cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 0), 2)
             atacar.append([primerPuntoX + 100, primerPuntoY + 150, distancia])
-            enemigoDetectado = False
+            enemigosNumero = enemigosNumero + 1
         else:
             cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
 
@@ -110,7 +111,7 @@ def inGameController():
             mitad = math.floor(x + h)
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 255), 2)
             farmear.append([primerPuntoX + 100, primerPuntoY + 150, distancia])
-            enemigoDetectado = False
+            minionsNumero = minionsNumero + 1
         else:
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
 
@@ -124,8 +125,9 @@ def inGameController():
         for contour in contours:
             if cv2.contourArea(contour) > 0:
                 x, y, w, h = cv2.boundingRect(contour)
-                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)
-                minionsCoordenadasAliadas = minionsCoordenadasAliadas + 1
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 3)
+                minionsNumeroAliados = minionsNumeroAliados + 1
+                cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
     #--------------------------------------------------------------buscar a quien atacar enenemigos--------------------------------------------------------------
     #print(atacar)
     maximo = 0
@@ -138,9 +140,9 @@ def inGameController():
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
         
     #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS--------------------------------------------------------------
-    print(minionsCoordenadasAliadas)
+    print(minionsNumeroAliados)
     cv2.imshow("webcam", img)
-    cv2.imshow("webcam2", mask)
+    #cv2.imshow("webcam2", mask)
     cv2.waitKey()
     print("hmm")
     wait(0.5)
