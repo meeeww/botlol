@@ -27,6 +27,8 @@ def inGameController():
     colorEnemigoUpper = np.array([3, 210, 206])# ENEMIGOS,
     colorMinionLower = np.array([0, 130, 100])
     colorMinionUpper = np.array([1, 145, 255])# MINIONS,
+    colorMinionAliadoLower = np.array([0, 130, 100])
+    colorMinionAliadoUpper = np.array([1, 145, 255])# MINIONS ALIADOS,
 
     global jugadorCoordenada
     global enemigosCoordenadas
@@ -37,6 +39,7 @@ def inGameController():
     farmear = []
     enemigosCoordenadas = []
     minionsCoordenadas = []
+    minionsCoordenadasAliadas = 0
     jugadorCoordenada = (1, 5)
     #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
@@ -52,7 +55,7 @@ def inGameController():
             if cv2.contourArea(contour) > 300:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
-                global jugadorCoordenada
+                jugadorCoordenada
                 jugadorCoordenada = (x, y)
     #--------------------------------------------------------------conseguir enemigos--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -82,7 +85,7 @@ def inGameController():
         else:
             cv2.line(img, (primerPuntoX + 50, primerPuntoY + 100), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
 
-    #--------------------------------------------------------------conseguir minions--------------------------------------------------------------
+    #--------------------------------------------------------------conseguir minions enemigos--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, colorMinionLower, colorMinionUpper)
 
@@ -111,6 +114,18 @@ def inGameController():
         else:
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
 
+    #--------------------------------------------------------------conseguir minions aliados--------------------------------------------------------------
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorMinionAliadoLower, colorMinionAliadoUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 0:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)
+                minionsCoordenadasAliadas = minionsCoordenadasAliadas + 1
     #--------------------------------------------------------------buscar a quien atacar enenemigos--------------------------------------------------------------
     #print(atacar)
     maximo = 0
@@ -123,6 +138,7 @@ def inGameController():
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
         
     #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS--------------------------------------------------------------
+    print(minionsCoordenadasAliadas)
     cv2.imshow("webcam", img)
     cv2.imshow("webcam2", mask)
     cv2.waitKey()
