@@ -56,5 +56,8 @@ funciones.conseguirEsencias()
 time.sleep(3)
 funciones.crearLobby()
 '''
+#PICKEAR
+
+
 #IN GAME
 ingame.inGameController()
