@@ -102,15 +102,17 @@ for distanciaEnemigo in atacar:
         aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
 
 
-# cv2.imshow("webcam", img)
-# cv2.waitKey()
+cv2.imshow("webcam", img)
+cv2.waitKey()
 print("hmm")
 wait(0.5)
 # while enemigoDetectado == False:
 # atacarFuncion()
+'''
 print(aQuienAtacar)
 py.moveTo(aQuienAtacar)
 py.mouseDown(button='right')
 py.mouseUp(button='right')
 print("kitear")
 kitear()
+'''
