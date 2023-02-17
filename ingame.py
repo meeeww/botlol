@@ -43,7 +43,7 @@ def inGameController():
     minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
     #py.screenshot().save("hey.png")
-    img = cv2.imread("hey2.png")
+    img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
