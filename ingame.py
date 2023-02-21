@@ -27,10 +27,27 @@ def kitear():
         cv2.waitKey()
 
 def comprar():
-    print("hay que hacerlo")
+    py.moveTo(791, 142)
+    py.mouseDown(button='left')
+    py.mouseUp(button='left')
+    wait(0.5)
+    py.moveTo(745, 534)
+    wait(0.5)
+    py.mouseDown(button='right')
+    py.mouseUp(button='right')
+    wait(0.5)
+    py.moveTo(791, 142)
+    py.mouseDown(button='left')
+    py.mouseUp(button='left')
 
 def irAMid():
-    print("hay que hacerlo")
+    py.moveTo(1796, 964)
+    wait(0.1)
+    py.mouseDown(button='left')
+    py.mouseUp(button='left')
+    py.mouseDown(button='right')
+    py.mouseUp(button='right')
+    wait(0.5)
 
 def inGameController():
     colorJugadorLower = np.array([23, 150, 180])
@@ -59,7 +76,7 @@ def inGameController():
     minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
     listaTorretas = []
-    #py.screenshot().save("hey.png")
+    py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
