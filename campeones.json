@@ -1,0 +1,21 @@
+{
+    "mf":{
+        "attackRange": 550,
+        "q":{
+            "range": 550,
+            "esCancelable": false
+        },
+        "w":{
+            "range": 550,
+            "esCancelable": false
+        },
+        "e":{
+            "range": 100,
+            "esCancelable": false
+        },
+        "r":{
+            "range": 550,
+            "esCancelable": true
+        }
+    }
+}
