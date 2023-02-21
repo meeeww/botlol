@@ -262,7 +262,7 @@ def inGameController():
 
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
-    cv2.imshow("webcam", im)
+    #cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")

@@ -60,4 +60,5 @@ funciones.crearLobby()
 
 
 #IN GAME
-ingame.inGameController()
+for x in range(5):
+    ingame.inGameController()
