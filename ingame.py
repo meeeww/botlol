@@ -29,6 +29,10 @@ def inGameController():
     colorMinionUpper = np.array([1, 145, 255])# MINIONS,
     colorMinionAliadoLower = np.array([103, 160, 195])
     colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
+    colorTorretasPlacasLower = np.array([0, 0, 0])#torretas
+    colorTorretasPlacasUpper = np.array([10, 255, 255])#torretas
+    colorTorretasLower = np.array([0, 180, 150])#torretas
+    colorTorretasUpper = np.array([1, 190, 200])#torretas
 
     global jugadorCoordenada
     global enemigosCoordenadas
@@ -42,6 +46,7 @@ def inGameController():
     minionsNumero = 0
     minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
+    listaTorretas = []
     #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
@@ -98,7 +103,7 @@ def inGameController():
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)
                 minionsCoordenadas.append([x, y])
-    
+
     for coordenada in minionsCoordenadas:
         primerPuntoX = coordenada[0]
         primerPuntoY = coordenada[1]
@@ -129,20 +134,91 @@ def inGameController():
                 minionsNumeroAliados = minionsNumeroAliados + 1
                 cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
     #--------------------------------------------------------------buscar a quien atacar enenemigos--------------------------------------------------------------
-    #print(atacar)
     maximo = 0
-    #aQuienAtacar = centroPantalla
+    aQuienAtacar = (0, 0)
     print(atacar)
-    
+
     for distanciaEnemigo in atacar:
-        if(distanciaEnemigo[2] > maximo): 
+        if(distanciaEnemigo[2] > maximo):
             maximo = distanciaEnemigo[2]
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
-        
     #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS--------------------------------------------------------------
     print(minionsNumeroAliados)
-    cv2.imshow("webcam", img)
-    #cv2.imshow("webcam2", mask)
+    if aQuienAtacar == (0, 0):
+        aQuienAtacar = (atacar[0][0], atacar[0][1])
+    #--------------------------------------------------------------BUSCAR TORRETAS--------------------------------------------------------------
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorTorretasLower, colorTorretasUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    botlane = [(1894, 996), (1883, 938), (1888, 904), (1890, 895)]
+    midlane = [(1819, 938), (1829, 909), (1850, 892), (1860, 890)]
+    toplane = [(1748, 853), (1801, 859), (1840, 855), (1854, 859)]
+    torretasMid = [(1881, 871), (1872, 864)]
+    nexo = (1886, 861)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 0:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
+                listaTorretas.append((x, y))
+                #minionsNumeroAliados = minionsNumeroAliados + 1
+                #cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
+
+    print(listaTorretas)
+    hayTorre = False
+    nexoOpen = False
+    for torre in listaTorretas:
+        if torre == (midlane[0][0], midlane[0][1]):
+            hayTorre = True
+            print("t1")
+    
+    if hayTorre == False:
+        for torre in listaTorretas:
+            if torre == (midlane[1][0], midlane[1][1]):
+                hayTorre = True
+                print("t2")
+
+    if hayTorre == False:
+        for torre in listaTorretas:
+            if torre == (midlane[2][0], midlane[2][1]):
+                hayTorre = True
+                print("t3")
+    
+    if hayTorre == False:
+        for torre in listaTorretas:
+            if torre == (midlane[3][0], midlane[3][1]):
+                hayTorre = True
+                print("inhib")
+
+    if hayTorre == False:
+        for torre in listaTorretas:
+            if torre == (torretasMid[0][0], torretasMid[0][1]):
+                hayTorre = True
+                print("nextorre1")
+
+    if hayTorre == False:
+        for torre in listaTorretas:
+            if torre == (torretasMid[1][0], torretasMid[1][1]):
+                hayTorre = True
+                print("nextorre2")
+
+    if hayTorre == False:
+        print("llegamos a nexo")
+        for torre in listaTorretas:
+            if torre == (nexo[0], nexo[1]):
+                hayTorre = True
+                nexoOpen = True
+                print("nexoOpen")
+
+    if hayTorre == True:
+        print("si hay")
+    #--------------------------------------------------------------FINAL--------------------------------------------------------------
+    print(aQuienAtacar)
+    im = cv2.resize(img, (960, 540))
+    im2 = cv2.resize(mask, (960, 540))
+    cv2.imshow("webcam", im)
+    #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
     wait(0.5)
