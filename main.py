@@ -60,5 +60,7 @@ funciones.crearLobby()
 
 
 #IN GAME
+ingame.comprar()
+ingame.irAMid()
 for x in range(5):
     ingame.inGameController()

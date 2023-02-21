@@ -47,7 +47,8 @@ def inGameController():
     global jugadorCoordenada
     global enemigosCoordenadas
 
-
+    muerteCD = 0
+    muerto = False
     atacar = []
     farmear = []
     hittearTorre = []
@@ -246,19 +247,21 @@ def inGameController():
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
     #--------------------------------------------------------------CONTROLADOR--------------------------------------------------------------
-    comprar()
-    irAMid()
-    if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
-        #atacar torre
-        print("atacar torre")
-    elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
-        kitear()
+    if muerto == True and muerteCD <= 1:#hay que detectar si muere
+        comprar()
+        irAMid()
     else:
-        print(aQuienAtacar)
-        py.moveTo(aQuienAtacar)
-        py.click(button='right')
-        print("kitear")
-        kitear()
+        if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
+            #atacar torre
+            print("atacar torre")
+        elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
+            kitear()
+        else:
+            print(aQuienAtacar)
+            py.moveTo(aQuienAtacar)
+            py.click(button='right')
+            print("kitear")
+            kitear()
 
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
