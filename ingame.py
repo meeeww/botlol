@@ -160,8 +160,12 @@ def inGameController():
         for contour in contours:
             if cv2.contourArea(contour) > 0:
                 x, y, w, h = cv2.boundingRect(contour)
-                cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
-                listaTorretas.append((x, y))
+                #cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
+                medioX = int((x + (x + w))/2)
+                medioY = int((y + (y + h))/2)
+                print(medioX)
+                cv2.circle(img, (medioX, medioY), 2, (252, 186, 3), 3)
+                listaTorretas.append((x, y))# hay que chekear si le da click derecho a las torres
                 #minionsNumeroAliados = minionsNumeroAliados + 1
                 #cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
 
@@ -173,7 +177,7 @@ def inGameController():
         if torre == (midlane[0][0], midlane[0][1]):
             hayTorre = True
             print("t1")
-    
+
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (midlane[1][0], midlane[1][1]):
@@ -187,7 +191,7 @@ def inGameController():
                 hayTorre = True
                 print("t3")
                 siguienteTorre = (midlane[2][0], midlane[2][1])
-    
+
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (midlane[3][0], midlane[3][1]):
@@ -234,7 +238,6 @@ def inGameController():
     #atacarFuncion()
     print(aQuienAtacar)
     '''
-    
     py.moveTo(aQuienAtacar)
     py.mouseDown(button='right')
     py.mouseUp(button='right')
