@@ -20,6 +20,9 @@ def kitear():
         py.mouseUp(button='right')
         cv2.waitKey()
 
+def backear():
+    py.press("b")
+
 def inGameController():
     colorJugadorLower = np.array([23, 150, 180])
     colorJugadorUpper = np.array([25, 225, 255]) # jugador
@@ -29,8 +32,6 @@ def inGameController():
     colorMinionUpper = np.array([1, 145, 255])# MINIONS,
     colorMinionAliadoLower = np.array([103, 160, 195])
     colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
-    colorTorretasPlacasLower = np.array([0, 0, 0])#torretas
-    colorTorretasPlacasUpper = np.array([10, 255, 255])#torretas
     colorTorretasLower = np.array([0, 180, 150])#torretas
     colorTorretasUpper = np.array([1, 190, 200])#torretas
 
@@ -225,7 +226,7 @@ def inGameController():
     if hayTorre == True:
         print("si hay, vamos a ")
         print(siguienteTorre)
-    #--------------------------------------------------------------FINAL--------------------------------------------------------------
+    #--------------------------------------------------------------CONTROLADOR--------------------------------------------------------------
     print(aQuienAtacar)
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
