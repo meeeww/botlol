@@ -3,6 +3,7 @@ import numpy as np
 import pyautogui as py
 import math
 import time
+import random
 
 centroPantalla = (930, 500)
 
@@ -10,18 +11,26 @@ def wait(segundos):
         time.sleep(segundos)
 
 def kitear():
-        wait(0.5)
-        py.moveTo(centroPantalla[0] + 50, centroPantalla[1])
+        moverDerecha = random.randint(40, 100)
+        moverIzquierda = random.randint(130, 200)
+        moverAltura = random.randint(0, 20)
+
+        wait(0.1)
+
+        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
-        wait(0.5)
-        py.moveTo(centroPantalla[0] - 150, centroPantalla[1])
+        wait(0.1)
+        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
         cv2.waitKey()
 
-def backear():
-    py.press("b")
+def comprar():
+    print("hay que hacerlo")
+
+def irAMid():
+    print("hay que hacerlo")
 
 def inGameController():
     colorJugadorLower = np.array([23, 150, 180])
@@ -41,6 +50,7 @@ def inGameController():
 
     atacar = []
     farmear = []
+    hittearTorre = []
     enemigosCoordenadas = []
     minionsCoordenadas = []
     enemigosNumero = 0
@@ -143,10 +153,16 @@ def inGameController():
         if(distanciaEnemigo[2] > maximo):
             maximo = distanciaEnemigo[2]
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
-    #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS--------------------------------------------------------------
-    print(minionsNumeroAliados)
+    #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS - y detectar torres --------------------------------------------------------------
+    print(farmear)
+    print("aqui")
     if aQuienAtacar == (0, 0):
-        aQuienAtacar = (atacar[0][0], atacar[0][1])
+        if atacar != []:
+            aQuienAtacar = (atacar[0][0], atacar[0][1])
+        elif farmear != []:
+            aQuienAtacar = (farmear[0][0], farmear[0][1])
+        elif hittearTorre != []:
+            aQuienAtacar = (hittearTorre[0][0], hittearTorre[0][1])
     #--------------------------------------------------------------BUSCAR TORRETAS--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, colorTorretasLower, colorTorretasUpper)
@@ -226,8 +242,24 @@ def inGameController():
     if hayTorre == True:
         print("si hay, vamos a ")
         print(siguienteTorre)
+
+    if aQuienAtacar == (0, 0):
+        aQuienAtacar = siguienteTorre
     #--------------------------------------------------------------CONTROLADOR--------------------------------------------------------------
-    print(aQuienAtacar)
+    comprar()
+    irAMid()
+    if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
+        #atacar torre
+        print("atacar torre")
+    elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
+        kitear()
+    else:
+        print(aQuienAtacar)
+        py.moveTo(aQuienAtacar)
+        py.click(button='right')
+        print("kitear")
+        kitear()
+
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
     cv2.imshow("webcam", im)
@@ -237,11 +269,3 @@ def inGameController():
     wait(0.5)
     #while enemigoDetectado == False:
     #atacarFuncion()
-    print(aQuienAtacar)
-    '''
-    py.moveTo(aQuienAtacar)
-    py.mouseDown(button='right')
-    py.mouseUp(button='right')
-    print("kitear")
-    kitear()
-    '''
