@@ -168,6 +168,7 @@ def inGameController():
     print(listaTorretas)
     hayTorre = False
     nexoOpen = False
+    siguienteTorre = (midlane[0][0], midlane[0][1])
     for torre in listaTorretas:
         if torre == (midlane[0][0], midlane[0][1]):
             hayTorre = True
@@ -178,30 +179,35 @@ def inGameController():
             if torre == (midlane[1][0], midlane[1][1]):
                 hayTorre = True
                 print("t2")
+                siguienteTorre = (midlane[1][0], midlane[1][1])
 
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (midlane[2][0], midlane[2][1]):
                 hayTorre = True
                 print("t3")
+                siguienteTorre = (midlane[2][0], midlane[2][1])
     
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (midlane[3][0], midlane[3][1]):
                 hayTorre = True
                 print("inhib")
+                siguienteTorre = (midlane[3][0], midlane[3][1])
 
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (torretasMid[0][0], torretasMid[0][1]):
                 hayTorre = True
                 print("nextorre1")
+                siguienteTorre = (torretasMid[0][0], torretasMid[0][1])
 
     if hayTorre == False:
         for torre in listaTorretas:
             if torre == (torretasMid[1][0], torretasMid[1][1]):
                 hayTorre = True
                 print("nextorre2")
+                siguienteTorre = (torretasMid[1][0], torretasMid[1][1])
 
     if hayTorre == False:
         print("llegamos a nexo")
@@ -210,9 +216,11 @@ def inGameController():
                 hayTorre = True
                 nexoOpen = True
                 print("nexoOpen")
+                siguienteTorre = (nexo[0], nexo[1])
 
     if hayTorre == True:
-        print("si hay")
+        print("si hay, vamos a ")
+        print(siguienteTorre)
     #--------------------------------------------------------------FINAL--------------------------------------------------------------
     print(aQuienAtacar)
     im = cv2.resize(img, (960, 540))
