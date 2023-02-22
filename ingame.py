@@ -76,6 +76,7 @@ def inGameController():
     minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
     listaTorretas = []
+    #Point(x=878, y=487) jugador en el centro
     #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
@@ -264,6 +265,7 @@ def inGameController():
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
     #--------------------------------------------------------------CONTROLADOR--------------------------------------------------------------
+    '''
     if muerto == True and muerteCD <= 1:#hay que detectar si muere
         comprar()
         irAMid()
@@ -279,10 +281,10 @@ def inGameController():
             py.click(button='right')
             print("kitear")
             kitear()
-            
+    '''
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
-    #cv2.imshow("webcam", im)
+    cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
