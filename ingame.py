@@ -76,7 +76,7 @@ def inGameController():
     minionsNumeroAliados = 0
     jugadorCoordenada = (1, 5)
     listaTorretas = []
-    py.screenshot().save("hey.png")
+    #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
@@ -165,15 +165,15 @@ def inGameController():
     #--------------------------------------------------------------buscar a quien atacar enenemigos--------------------------------------------------------------
     maximo = 0
     aQuienAtacar = (0, 0)
-    print(atacar)
+    #print(atacar)
 
     for distanciaEnemigo in atacar:
         if(distanciaEnemigo[2] > maximo):
             maximo = distanciaEnemigo[2]
             aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
     #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS - y detectar torres --------------------------------------------------------------
-    print(farmear)
-    print("aqui")
+    #print(farmear)
+    #print("aqui")
     if aQuienAtacar == (0, 0):
         if atacar != []:
             aQuienAtacar = (atacar[0][0], atacar[0][1])
@@ -198,13 +198,13 @@ def inGameController():
                 #cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
                 medioX = int((x + (x + w))/2)
                 medioY = int((y + (y + h))/2)
-                print(medioX)
+                #print(medioX)
                 cv2.circle(img, (medioX, medioY), 2, (252, 186, 3), 3)
                 listaTorretas.append((x, y))# hay que chekear si le da click derecho a las torres
                 #minionsNumeroAliados = minionsNumeroAliados + 1
                 #cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
 
-    print(listaTorretas)
+    #print(listaTorretas)
     hayTorre = False
     nexoOpen = False
     siguienteTorre = (midlane[0][0], midlane[0][1])
@@ -279,10 +279,10 @@ def inGameController():
             py.click(button='right')
             print("kitear")
             kitear()
-
+            
     im = cv2.resize(img, (960, 540))
     im2 = cv2.resize(mask, (960, 540))
-    #cv2.imshow("webcam", im)
+    cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
