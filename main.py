@@ -60,10 +60,10 @@ funciones.crearLobby()
 
 
 #IN GAME
-time.sleep(3)
+time.sleep(2)
 print(py.position())
 #ingame.comprar()
 #ingame.irAMid()
 #time.sleep(30)
-for x in range(1):
+for x in range(10):
     ingame.inGameController()

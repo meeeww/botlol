@@ -7,6 +7,21 @@ import random
 
 centroPantalla = (930, 500)
 
+colorJugadorLower = np.array([23, 165, 198])
+colorJugadorUpper = np.array([25, 225, 233]) # jugador
+colorEnemigoLower = np.array([3, 144, 153])
+colorEnemigoUpper = np.array([3, 210, 206])# ENEMIGOS,
+colorMinionLower = np.array([0, 130, 100])
+colorMinionUpper = np.array([1, 145, 255])# MINIONS,
+colorMinionAliadoLower = np.array([103, 160, 195])
+colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
+colorTorretasMinimapLower = np.array([0, 180, 150])#torretas
+colorTorretasMinimapUpper = np.array([1, 190, 200])#torretas
+colorTorretasLower = np.array([2, 200, 42])#torretas
+colorTorretasUpper = np.array([2, 200, 172])#torretas
+
+
+
 def wait(segundos):
         time.sleep(segundos)
 
@@ -14,17 +29,23 @@ def kitear():
         moverDerecha = random.randint(40, 100)
         moverIzquierda = random.randint(130, 200)
         moverAltura = random.randint(0, 20)
-
-        wait(0.1)
-
         py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
-        wait(0.1)
+        wait(0.05)
         py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
-        cv2.waitKey()
+
+def retroceder():
+    moverIzquierda = random.randint(130, 200)
+    moverAltura = random.randint(0, 20)
+
+    wait(0.1)
+
+    py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] - moverAltura)
+    py.mouseDown(button='right')
+    py.mouseUp(button='right')
 
 def comprar():
     py.moveTo(791, 142)
@@ -50,16 +71,7 @@ def irAMid():
     wait(0.5)
 
 def inGameController():
-    colorJugadorLower = np.array([23, 150, 180])
-    colorJugadorUpper = np.array([25, 225, 255]) # jugador
-    colorEnemigoLower = np.array([3, 144, 153])
-    colorEnemigoUpper = np.array([3, 210, 206])# ENEMIGOS,
-    colorMinionLower = np.array([0, 130, 100])
-    colorMinionUpper = np.array([1, 145, 255])# MINIONS,
-    colorMinionAliadoLower = np.array([103, 160, 195])
-    colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
-    colorTorretasLower = np.array([0, 180, 150])#torretas
-    colorTorretasUpper = np.array([1, 190, 200])#torretas
+    
 
     global jugadorCoordenada
     global enemigosCoordenadas
@@ -88,7 +100,7 @@ def inGameController():
 
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 300:
+            if cv2.contourArea(contour) > 5:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
                 jugadorCoordenada
@@ -176,16 +188,24 @@ def inGameController():
     #print(farmear)
     #print("aqui")
     if aQuienAtacar == (0, 0):
+        print("-------")
+        print(atacar)
+        print(farmear)
+        print(hittearTorre)
         if atacar != []:
             aQuienAtacar = (atacar[0][0], atacar[0][1])
         elif farmear != []:
             aQuienAtacar = (farmear[0][0], farmear[0][1])
         elif hittearTorre != []:
             aQuienAtacar = (hittearTorre[0][0], hittearTorre[0][1])
+    
+    print("------")
+    print(aQuienAtacar)
     #--------------------------------------------------------------BUSCAR TORRETAS--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(image, colorTorretasLower, colorTorretasUpper)
+    mask = cv2.inRange(image, colorTorretasMinimapLower, colorTorretasMinimapUpper)
 
+    #conseguir en minimapa
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     botlane = [(1894, 996), (1883, 938), (1888, 904), (1890, 895)]
     midlane = [(1819, 938), (1829, 909), (1850, 892), (1860, 890)]
@@ -201,10 +221,28 @@ def inGameController():
                 medioY = int((y + (y + h))/2)
                 #print(medioX)
                 cv2.circle(img, (medioX, medioY), 2, (252, 186, 3), 3)
-                listaTorretas.append((x, y))# hay que chekear si le da click derecho a las torres
+                listaTorretas.append((x, y))# hay que chekear si le da click derecho a las torres - no da. buildeando
                 #minionsNumeroAliados = minionsNumeroAliados + 1
                 #cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
 
+    #conseguir para atacar in-game
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorTorretasLower, colorTorretasUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 0:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
+                medioX = int(w/2)
+                medioY = int(h/2)
+                #print(medioX)
+                #cv2.circle(img, (medioX, medioY), 2, (20, 0, 255), 3)
+                hittearTorre.append((x + 70, y + 175))# hay que chekear si le da click derecho a las torres - no da. buildeando
+                #minionsNumeroAliados = minionsNumeroAliados + 1
+                cv2.line(img, (x + medioX, y + medioY), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
     #print(listaTorretas)
     hayTorre = False
     nexoOpen = False
@@ -271,8 +309,12 @@ def inGameController():
         irAMid()
     else:
         if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
-            #atacar torre
-            print("atacar torre")
+            print(hittearTorre)
+            py.moveTo(hittearTorre)
+            py.click(button='right')
+            print("kitear")
+            kitear()
+            retroceder()
         elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
             kitear()
         else:
@@ -280,11 +322,12 @@ def inGameController():
             py.moveTo(aQuienAtacar)
             py.click(button='right')
             print("kitear")
+            wait(0.5)
             kitear()
     '''
-    im = cv2.resize(img, (960, 540))
-    im2 = cv2.resize(mask, (960, 540))
-    cv2.imshow("webcam", im)
+    #im = cv2.resize(img, (1500, 1000))
+    im2 = cv2.resize(mask, (1500, 1000))
+    cv2.imshow("webcam", img)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
