@@ -30,18 +30,18 @@ def wait(segundos):
 def kitear():
         moverDerecha = random.randint(40, 100)
         moverIzquierda = random.randint(100, 140)
-        moverAltura = random.randint(-100, 20)
-        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
+        moverAltura = random.randint(0, 200)
+        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] - moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
         wait(0.05)
-        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
+        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] - moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
 
 def retroceder():
     moverIzquierda = random.randint(130, 200)
-    moverAltura = random.randint(0, 20)
+    moverAltura = random.randint(0, 200)
 
     wait(0.1)
 
@@ -191,10 +191,10 @@ def inGameController(campeonEscogido):
     #print(farmear)
     #print("aqui")
     if aQuienAtacar == (0, 0):
-        print("-------")
-        print(atacar)
-        print(farmear)
-        print(hittearTorre)
+        #print("-------")
+        #print(atacar)
+        #print(farmear)
+        #print(hittearTorre)
         if atacar != []:
             aQuienAtacar = (atacar[0][0], atacar[0][1])
         elif farmear != []:
@@ -202,8 +202,8 @@ def inGameController(campeonEscogido):
         elif hittearTorre != []:
             aQuienAtacar = (hittearTorre[0][0], hittearTorre[0][1])
     
-    print("------")
-    print(aQuienAtacar)
+    #print("------")
+    #print(aQuienAtacar)
     #--------------------------------------------------------------BUSCAR TORRETAS--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, colorTorretasMinimapLower, colorTorretasMinimapUpper)
@@ -253,7 +253,7 @@ def inGameController(campeonEscogido):
     for torre in listaTorretas:
         if torre == (midlane[0][0], midlane[0][1]):
             hayTorre = True
-            print("t1")
+            #print("t1")
 
     if hayTorre == False:
         for torre in listaTorretas:
@@ -306,30 +306,35 @@ def inGameController(campeonEscogido):
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
-    print(muerto)
+    #print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
-    print("# HITTING")
+    
     if muerto == True:#hay que detectar si muere
         comprar()
-    else:
+        wait(0.5)
+    
+    if muerto == False:
         if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
-            print(hittearTorre)
+            print("hit torre")
             py.moveTo(hittearTorre)
             py.click(button='right')
-            print("kitear")
+            #print("kitear")
             kitear()
             retroceder()
         elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
+            print("vamos a mid")
             irAMid()
             if config[campeonEscogido] == "mf":
                 py.press('w')
+            wait(5)
         else:
-            print(aQuienAtacar)
+            print("atacando minions o enemigos, numero habilidad: ")
             habilidad = random.randint(0, 10)
+            print(habilidad)
             if habilidad == 10:
                 py.press('r')
-                if config[campeonEscogido]["r"]["esCancelable"] == True:
-                    wait(5)
+                #if config[campeonEscogido]["r"]["esCancelable"] == True:
+                    #wait(5)
             elif habilidad == 9:
                 py.press('e')
             elif habilidad == 8:
@@ -347,8 +352,9 @@ def inGameController(campeonEscogido):
     #cv2.imshow("webcam", img)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
-    print("hmm")
+    #print("hmm")
     py.keyDown('ctrl')
+    py.press('q')
     py.press('r')
     py.press('q')
     py.press('w')
