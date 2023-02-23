@@ -28,7 +28,7 @@ def wait(segundos):
 def kitear():
         moverDerecha = random.randint(40, 100)
         moverIzquierda = random.randint(100, 140)
-        moverAltura = random.randint(0, 20)
+        moverAltura = random.randint(-100, 20)
         py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
@@ -77,7 +77,7 @@ def inGameController():
     global enemigosCoordenadas
 
     muerteCD = 0
-    muerto = False
+    muerto = True
     atacar = []
     farmear = []
     hittearTorre = []
@@ -105,6 +105,7 @@ def inGameController():
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
                 jugadorCoordenada
                 jugadorCoordenada = (x, y)
+                muerto = False
     #--------------------------------------------------------------conseguir enemigos--------------------------------------------------------------
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(image, colorEnemigoLower, colorEnemigoUpper)
@@ -302,11 +303,12 @@ def inGameController():
 
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
+    #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
+    print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
     print("# HITTING")
-    if muerto == True and muerteCD <= 1:#hay que detectar si muere
+    if muerto == True:#hay que detectar si muere
         comprar()
-        irAMid()
     else:
         if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
             print(hittearTorre)
@@ -316,7 +318,7 @@ def inGameController():
             kitear()
             retroceder()
         elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
-            kitear()
+            irAMid()
         else:
             print(aQuienAtacar)
             py.moveTo(aQuienAtacar)
