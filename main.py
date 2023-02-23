@@ -58,7 +58,7 @@ funciones.crearLobby()
 '''
 #PICKEAR
 
-
+campeonEscogido = "mf"
 #IN GAME
 time.sleep(2)
 print(py.position())
@@ -66,4 +66,4 @@ print(py.position())
 #ingame.irAMid()
 #time.sleep(30)
 for x in range(360):
-    ingame.inGameController()
+    ingame.inGameController(campeonEscogido)

@@ -4,6 +4,7 @@ import pyautogui as py
 import math
 import time
 import random
+import json
 
 centroPantalla = (930, 500)
 
@@ -20,7 +21,8 @@ colorTorretasMinimapUpper = np.array([1, 190, 200])#torretas
 colorTorretasLower = np.array([2, 200, 42])#torretas
 colorTorretasUpper = np.array([2, 200, 172])#torretas
 
-
+with open("config.json", "r") as jsonfile:
+    config = json.load(jsonfile)
 
 def wait(segundos):
         time.sleep(segundos)
@@ -70,7 +72,7 @@ def irAMid():
     py.mouseUp(button='right')
     wait(0.5)
 
-def inGameController():
+def inGameController(campeonEscogido):
     print("# STARTING")
 
     global jugadorCoordenada
@@ -319,8 +321,22 @@ def inGameController():
             retroceder()
         elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
             irAMid()
+            if config[campeonEscogido] == "mf":
+                py.press('w')
         else:
             print(aQuienAtacar)
+            habilidad = random.randint(0, 10)
+            if habilidad == 10:
+                py.press('r')
+                if config[campeonEscogido]["r"]["esCancelable"] == True:
+                    wait(5)
+            elif habilidad == 9:
+                py.press('e')
+            elif habilidad == 8:
+                py.press('w')
+            elif habilidad == 7:
+                py.press('q')
+
             py.moveTo(aQuienAtacar)
             py.click(button='right')
             print("kitear")
@@ -332,6 +348,12 @@ def inGameController():
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
+    py.keyDown('ctrl')
+    py.press('r')
+    py.press('q')
+    py.press('w')
+    py.press('e')
+    py.keyUp('ctrl')
     wait(0.1)
     #while enemigoDetectado == False:
     #atacarFuncion()
