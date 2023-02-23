@@ -7,12 +7,12 @@ import random
 
 centroPantalla = (930, 500)
 
-colorJugadorLower = np.array([23, 165, 198])
+colorJugadorLower = np.array([24, 165, 198])
 colorJugadorUpper = np.array([25, 225, 233]) # jugador
 colorEnemigoLower = np.array([3, 144, 153])
 colorEnemigoUpper = np.array([3, 210, 206])# ENEMIGOS,
-colorMinionLower = np.array([0, 130, 100])
-colorMinionUpper = np.array([1, 145, 255])# MINIONS,
+colorMinionLower = np.array([0, 130, 195])
+colorMinionUpper = np.array([1, 145, 209])# MINIONS,
 colorMinionAliadoLower = np.array([103, 160, 195])
 colorMinionAliadoUpper = np.array([104, 161, 210])# MINIONS ALIADOS,
 colorTorretasMinimapLower = np.array([0, 180, 150])#torretas
@@ -27,7 +27,7 @@ def wait(segundos):
 
 def kitear():
         moverDerecha = random.randint(40, 100)
-        moverIzquierda = random.randint(130, 200)
+        moverIzquierda = random.randint(100, 140)
         moverAltura = random.randint(0, 20)
         py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
@@ -71,7 +71,7 @@ def irAMid():
     wait(0.5)
 
 def inGameController():
-    
+    print("# STARTING")
 
     global jugadorCoordenada
     global enemigosCoordenadas
@@ -89,7 +89,7 @@ def inGameController():
     jugadorCoordenada = (1, 5)
     listaTorretas = []
     #Point(x=878, y=487) jugador en el centro
-    #py.screenshot().save("hey.png")
+    py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
@@ -154,10 +154,10 @@ def inGameController():
 
         distancia = math.sqrt(math.pow((segundoPuntoX-primerPuntoX), 2) + math.pow((segundoPuntoY-primerPuntoY), 2))
         #print(str(distancia) + " distancia")
-        if distancia < (525*0.6):
+        if distancia < (550*0.6):
             mitad = math.floor(x + h)
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 255), 2)
-            farmear.append([primerPuntoX + 100, primerPuntoY + 150, distancia])
+            farmear.append([primerPuntoX + 25, primerPuntoY + 40, distancia])
             minionsNumero = minionsNumero + 1
         else:
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 0, 255), 2)
@@ -183,8 +183,8 @@ def inGameController():
     for distanciaEnemigo in atacar:
         if(distanciaEnemigo[2] > maximo):
             maximo = distanciaEnemigo[2]
-            aQuienAtacar = (distanciaEnemigo[0], distanciaEnemigo[1])
-    #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS - y detectar torres --------------------------------------------------------------
+            aQuienAtacar = (distanciaEnemigo[0] - 15, distanciaEnemigo[1])
+    #--------------------------------------------------------------HACE FALTA AÑADIR A QUIEN ATACAR MINIONS - y detectar torres - hecho--------------------------------------------------------------
     #print(farmear)
     #print("aqui")
     if aQuienAtacar == (0, 0):
@@ -302,8 +302,8 @@ def inGameController():
 
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
-    #--------------------------------------------------------------CONTROLADOR--------------------------------------------------------------
-    '''
+    #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
+    print("# HITTING")
     if muerto == True and muerteCD <= 1:#hay que detectar si muere
         comprar()
         irAMid()
@@ -324,13 +324,12 @@ def inGameController():
             print("kitear")
             wait(0.5)
             kitear()
-    '''
     #im = cv2.resize(img, (1500, 1000))
     im2 = cv2.resize(mask, (1500, 1000))
-    cv2.imshow("webcam", img)
+    #cv2.imshow("webcam", img)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     print("hmm")
-    wait(0.5)
+    wait(0.1)
     #while enemigoDetectado == False:
     #atacarFuncion()
