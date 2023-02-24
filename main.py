@@ -65,5 +65,5 @@ print(py.position())
 #ingame.comprar()
 #ingame.irAMid()
 #time.sleep(30)
-for x in range(10):
+for x in range(3):
     ingame.inGameController(campeonEscogido)

@@ -30,22 +30,22 @@ def wait(segundos):
 def kitear():
         moverDerecha = random.randint(40, 100)
         moverIzquierda = random.randint(100, 140)
-        moverAltura = random.randint(0, 200)
-        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] - moverAltura)
+        moverAltura = random.randint(-100, 50)
+        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
         wait(0.05)
-        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] - moverAltura)
+        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
         py.mouseDown(button='right')
         py.mouseUp(button='right')
 
 def retroceder():
     moverIzquierda = random.randint(130, 200)
-    moverAltura = random.randint(0, 200)
+    moverAltura = random.randint(-100, 50)
 
     wait(0.1)
 
-    py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] - moverAltura)
+    py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
     py.mouseDown(button='right')
     py.mouseUp(button='right')
 
@@ -91,7 +91,7 @@ def inGameController(campeonEscogido):
     jugadorCoordenada = (1, 5)
     listaTorretas = []
     #Point(x=878, y=487) jugador en el centro
-    py.screenshot().save("hey.png")
+    #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
@@ -102,7 +102,7 @@ def inGameController(campeonEscogido):
 
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 5:
+            if cv2.contourArea(contour) > 50:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 1)
                 jugadorCoordenada
@@ -303,12 +303,16 @@ def inGameController(campeonEscogido):
         print("si hay, vamos a ")
         print(siguienteTorre)
 
+
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
+
+    if listaTorretas != []:
+        aQuienAtacar = (listaTorretas[0][0], listaTorretas[0][1])
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
     #print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
-    
+    '''
     if muerto == True:#hay que detectar si muere
         comprar()
         wait(0.5)
@@ -318,6 +322,7 @@ def inGameController(campeonEscogido):
             print("hit torre")
             py.moveTo(hittearTorre)
             py.click(button='right')
+            wait(0.5)
             #print("kitear")
             kitear()
             retroceder()
@@ -345,11 +350,12 @@ def inGameController(campeonEscogido):
             py.moveTo(aQuienAtacar)
             py.click(button='right')
             print("kitear")
-            wait(0.5)
+            wait(2)
             kitear()
+    '''
     #im = cv2.resize(img, (1500, 1000))
     im2 = cv2.resize(mask, (1500, 1000))
-    #cv2.imshow("webcam", img)
+    cv2.imshow("webcam", img)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
