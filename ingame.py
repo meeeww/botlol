@@ -157,7 +157,7 @@ def inGameController(campeonEscogido):
 
         distancia = math.sqrt(math.pow((segundoPuntoX-primerPuntoX), 2) + math.pow((segundoPuntoY-primerPuntoY), 2))
         #print(str(distancia) + " distancia")
-        if distancia < (550*0.6):
+        if distancia < (5000*0.6):
             mitad = math.floor(x + h)
             cv2.line(img, (primerPuntoX + 25, primerPuntoY + 40), (segundoPuntoX + 50, segundoPuntoY + 120), (0, 255, 255), 2)
             farmear.append([primerPuntoX + 25, primerPuntoY + 40, distancia])
