@@ -3,19 +3,23 @@
         "attackRange": 550,
         "q":{
             "range": 550,
-            "esCancelable": false
+            "esCancelable": false,
+            "cooldown": 7
         },
         "w":{
             "range": 550,
-            "esCancelable": false
+            "esCancelable": false,
+            "cooldown": 12
         },
         "e":{
             "range": 100,
-            "esCancelable": false
+            "esCancelable": false,
+            "cooldown": 18
         },
         "r":{
             "range": 550,
-            "esCancelable": true
+            "esCancelable": true,
+            "cooldown": 120
         }
     }
 }

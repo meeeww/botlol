@@ -58,6 +58,12 @@ funciones.crearLobby()
 '''
 #PICKEAR
 
-
+campeonEscogido = "mf"
 #IN GAME
-ingame.inGameController()
+time.sleep(2)
+print(py.position())
+#ingame.comprar()
+#ingame.irAMid()
+#time.sleep(30)
+for x in range(3):
+    ingame.inGameController(campeonEscogido)
