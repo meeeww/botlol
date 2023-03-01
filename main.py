@@ -27,7 +27,7 @@ python.exe -m pip install --upgrade pip
 pip install Pillow --upgrade
 pip install pyautogui
 pip install colorama
-pip install pytesseract
+pip install pytesseractq
 pip install tesseract
 pip install numpy
 pip install opencv-python

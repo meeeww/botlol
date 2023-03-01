@@ -370,7 +370,7 @@ def inGameController(campeonEscogido):
     
     im = cv2.resize(img, (1000, 800))
     im2 = cv2.resize(mask, (1500, 1000))
-    #cv2.imshow("webcam", im)
+    cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
