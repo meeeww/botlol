@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pyautogui as py
+import pydirectinput
 import math
 import time
 import random
@@ -31,13 +32,13 @@ def kitear():
         moverDerecha = random.randint(40, 100)
         moverIzquierda = random.randint(100, 140)
         moverAltura = random.randint(-100, 50)
-        py.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
-        py.mouseDown(button='right')
-        py.mouseUp(button='right')
+        pydirectinput.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
+        pydirectinput.mouseDown(button='right')
+        pydirectinput.mouseUp(button='right')
         wait(0.05)
-        py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
-        py.mouseDown(button='right')
-        py.mouseUp(button='right')
+        pydirectinput.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
+        pydirectinput.mouseDown(button='right')
+        pydirectinput.mouseUp(button='right')
 
 def retroceder():
     moverIzquierda = random.randint(130, 200)
@@ -45,31 +46,31 @@ def retroceder():
 
     wait(0.1)
 
-    py.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
-    py.mouseDown(button='right')
-    py.mouseUp(button='right')
+    pydirectinput.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
+    pydirectinput.mouseDown(button='right')
+    pydirectinput.mouseUp(button='right')
 
 def comprar():
-    py.moveTo(791, 142)
-    py.mouseDown(button='left')
-    py.mouseUp(button='left')
+    pydirectinput.moveTo(791, 142)
+    pydirectinput.mouseDown(button='left')
+    pydirectinput.mouseUp(button='left')
     wait(0.5)
-    py.moveTo(745, 534)
+    pydirectinput.moveTo(745, 534)
     wait(0.5)
-    py.mouseDown(button='right')
-    py.mouseUp(button='right')
+    pydirectinput.mouseDown(button='right')
+    pydirectinput.mouseUp(button='right')
     wait(0.5)
-    py.moveTo(791, 142)
-    py.mouseDown(button='left')
-    py.mouseUp(button='left')
+    pydirectinput.moveTo(791, 142)
+    pydirectinput.mouseDown(button='left')
+    pydirectinput.mouseUp(button='left')
 
 def irAMid():
-    py.moveTo(1796, 964)
+    pydirectinput.moveTo(1796, 964)
     wait(0.1)
-    py.mouseDown(button='left')
-    py.mouseUp(button='left')
-    py.mouseDown(button='right')
-    py.mouseUp(button='right')
+    pydirectinput.mouseDown(button='left')
+    pydirectinput.mouseUp(button='left')
+    pydirectinput.mouseDown(button='right')
+    pydirectinput.mouseUp(button='right')
     wait(0.5)
 
 def subirAbilidad():
@@ -81,8 +82,8 @@ def subirAbilidad():
             location = py.locateOnScreen(imageSubida, grayscale=True, confidence=0.8)
         except Exception as e:
             print(e)
-    py.moveTo(location)
-    py.click()
+    pydirectinput.moveTo(location)
+    pydirectinput.click()
     location = None
 
 def inGameController(campeonEscogido):
@@ -325,7 +326,7 @@ def inGameController(campeonEscogido):
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
     #print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
-    '''
+    
     if muerto == True:#hay que detectar si muere
         comprar()
         wait(0.5)
@@ -333,8 +334,8 @@ def inGameController(campeonEscogido):
     if muerto == False:
         if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
             print("hit torre")
-            py.moveTo(hittearTorre)
-            py.click(button='right')
+            pydirectinput.moveTo(hittearTorre[0], hittearTorre[1])
+            pydirectinput.click(button='right')
             wait(0.5)
             #print("kitear")
             kitear()
@@ -343,43 +344,43 @@ def inGameController(campeonEscogido):
             print("vamos a mid")
             irAMid()
             if config[campeonEscogido] == "mf":
-                py.press('w')
+                pydirectinput.press('w')
             wait(5)
         else:
             print("atacando minions o enemigos, numero habilidad: ")
             habilidad = random.randint(0, 10)
             print(habilidad)
             if habilidad == 10:
-                py.press('r')
+                pydirectinput.press('r')
                 #if config[campeonEscogido]["r"]["esCancelable"] == True:
                     #wait(5)
             elif habilidad == 9:
-                py.press('e')
+                pydirectinput.press('e')
             elif habilidad == 8:
-                py.press('w')
+                pydirectinput.press('w')
             elif habilidad == 7:
-                py.press('q')
+                pydirectinput.press('q')
 
-            py.moveTo(aQuienAtacar)
+            pydirectinput.moveTo(aQuienAtacar[0], aQuienAtacar[1])
             subirAbilidad()
-            py.click(button='right')
+            pydirectinput.click(button='right')
             print("kitear")
             wait(2)
             kitear()
-    '''
+    
     im = cv2.resize(img, (1000, 800))
     im2 = cv2.resize(mask, (1500, 1000))
-    cv2.imshow("webcam", im)
+    #cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
-    py.keyDown('ctrl')
-    py.press('q')
-    py.press('r')
-    py.press('q')
-    py.press('w')
-    py.press('e')
-    py.keyUp('ctrl')
+    pydirectinput.keyDown('ctrl')
+    pydirectinput.press('q')
+    pydirectinput.press('r')
+    pydirectinput.press('q')
+    pydirectinput.press('w')
+    pydirectinput.press('e')
+    pydirectinput.keyUp('ctrl')
     wait(0.1)
     #while enemigoDetectado == False:
     #atacarFuncion()

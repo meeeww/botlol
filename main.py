@@ -31,6 +31,7 @@ pip install pytesseract
 pip install tesseract
 pip install numpy
 pip install opencv-python
+pip install PyDirectInput
 
 auto-py-to-exe -> para hacer deploy de .exe
 
