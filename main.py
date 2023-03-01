@@ -15,7 +15,7 @@ from colorama import Fore
 colorama.init(autoreset=True)
 
 
-with open("src/config.json", "r") as jsonfile:
+with open("./src/config.json", "r") as jsonfile:
     config = json.load(jsonfile)
     print("Read successful")
 
