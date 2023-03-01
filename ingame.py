@@ -72,6 +72,19 @@ def irAMid():
     py.mouseUp(button='right')
     wait(0.5)
 
+def subirAbilidad():
+    location = None
+    imageSubida = "./imagenes/ingame/levelup.PNG"
+
+    if (location == None):
+        try:
+            location = py.locateOnScreen(imageSubida, grayscale=True, confidence=0.8)
+        except Exception as e:
+            print(e)
+    py.moveTo(location)
+    py.click()
+    location = None
+
 def inGameController(campeonEscogido):
     print("# STARTING")
 
@@ -348,6 +361,7 @@ def inGameController(campeonEscogido):
                 py.press('q')
 
             py.moveTo(aQuienAtacar)
+            subirAbilidad()
             py.click(button='right')
             print("kitear")
             wait(2)
