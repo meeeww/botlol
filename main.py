@@ -23,12 +23,14 @@ usuario = config["username"]
 contra = config["password"]
 
 """
-1. python.exe -m pip install --upgrade pip
-2. pip install Pillow --upgrade
-3. pip install pyautogui
-4. pip install colorama
-5. pip install pytesseract
-6. pip install tesseract
+python.exe -m pip install --upgrade pip
+pip install Pillow --upgrade
+pip install pyautogui
+pip install colorama
+pip install pytesseract
+pip install tesseract
+pip install numpy
+pip install opencv-python
 
 auto-py-to-exe -> para hacer deploy de .exe
 
