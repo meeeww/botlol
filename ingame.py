@@ -210,20 +210,20 @@ def inGameController(campeonEscogido):
 
     #conseguir en minimapa
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    botlane = [(1894, 996), (1883, 938), (1888, 904), (1890, 895)]
-    midlane = [(1819, 938), (1829, 909), (1850, 892), (1860, 890)]
-    toplane = [(1748, 853), (1801, 859), (1840, 855), (1854, 859)]
-    torretasMid = [(1881, 871), (1872, 864)]
-    nexo = (1886, 861)
+    midlane = [(1792, 896), (1804, 864), (1831, 843), (1842, 838)]
+    torretasMid = [(1869, 816), (1860, 806)]
+    nexo = (1877, 808)
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 0:
+            if cv2.contourArea(contour) > 1:
                 x, y, w, h = cv2.boundingRect(contour)
                 #cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
                 medioX = int((x + (x + w))/2)
                 medioY = int((y + (y + h))/2)
                 #print(medioX)
                 cv2.circle(img, (medioX, medioY), 2, (252, 186, 3), 3)
+
+                #print("-> " + str(x) + ", " + str(y))
                 listaTorretas.append((x, y))# hay que chekear si le da click derecho a las torres - no da. buildeando
                 #minionsNumeroAliados = minionsNumeroAliados + 1
                 #cv2.line(img, (x + 25, y + 40), (jugadorCoordenada[0] + 50, jugadorCoordenada[1] + 120), (255, 255, 255), 2)
@@ -236,7 +236,7 @@ def inGameController(campeonEscogido):
 
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 0:
+            if cv2.contourArea(contour) > 5:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (252, 186, 3), 3)
                 medioX = int(w/2)
@@ -253,7 +253,7 @@ def inGameController(campeonEscogido):
     for torre in listaTorretas:
         if torre == (midlane[0][0], midlane[0][1]):
             hayTorre = True
-            #print("t1")
+            print("t1")
 
     if hayTorre == False:
         for torre in listaTorretas:
@@ -353,9 +353,9 @@ def inGameController(campeonEscogido):
             wait(2)
             kitear()
     '''
-    #im = cv2.resize(img, (1500, 1000))
+    im = cv2.resize(img, (1000, 800))
     im2 = cv2.resize(mask, (1500, 1000))
-    cv2.imshow("webcam", img)
+    cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
