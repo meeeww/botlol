@@ -91,7 +91,7 @@ def inGameController(campeonEscogido):
     jugadorCoordenada = (1, 5)
     listaTorretas = []
     #Point(x=878, y=487) jugador en el centro
-    py.screenshot().save("hey.png")
+    #py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
@@ -312,7 +312,7 @@ def inGameController(campeonEscogido):
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
     #print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
-    
+    '''
     if muerto == True:#hay que detectar si muere
         comprar()
         wait(0.5)
@@ -352,10 +352,10 @@ def inGameController(campeonEscogido):
             print("kitear")
             wait(2)
             kitear()
-    
+    '''
     #im = cv2.resize(img, (1500, 1000))
     im2 = cv2.resize(mask, (1500, 1000))
-    #cv2.imshow("webcam", img)
+    cv2.imshow("webcam", img)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
