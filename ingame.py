@@ -316,13 +316,12 @@ def inGameController(campeonEscogido):
     if hayTorre == True:
         print("si hay, vamos a ")
         print(siguienteTorre)
-
-
+    
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
 
-    if listaTorretas != []:
-        aQuienAtacar = (listaTorretas[0][0], listaTorretas[0][1])
+
+    
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
     #print(muerto)
     #--------------------------------------------------------------CONTROLADOR hace falta detectar si muere--------------------------------------------------------------
