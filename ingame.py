@@ -29,16 +29,14 @@ def wait(segundos):
         time.sleep(segundos)
 
 def kitear():
-        moverDerecha = random.randint(40, 100)
+        moverDerecha = random.randint(40, 700)
         moverIzquierda = random.randint(100, 140)
-        moverAltura = random.randint(-100, 50)
+        moverAltura = random.randint(50, 500)
         pydirectinput.moveTo(centroPantalla[0] + moverDerecha, centroPantalla[1] + moverAltura)
-        pydirectinput.mouseDown(button='right')
-        pydirectinput.mouseUp(button='right')
-        wait(0.05)
+        pydirectinput.rightClick()
+        wait(1)
         pydirectinput.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
-        pydirectinput.mouseDown(button='right')
-        pydirectinput.mouseUp(button='right')
+        pydirectinput.rightClick()
 
 def retroceder():
     moverIzquierda = random.randint(130, 200)
@@ -369,7 +367,7 @@ def inGameController(campeonEscogido):
     
     im = cv2.resize(img, (1000, 800))
     im2 = cv2.resize(mask, (1500, 1000))
-    cv2.imshow("webcam", im)
+    #cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
     cv2.waitKey()
     #print("hmm")
@@ -380,6 +378,7 @@ def inGameController(campeonEscogido):
     pydirectinput.press('w')
     pydirectinput.press('e')
     pydirectinput.keyUp('ctrl')
+    pydirectinput.press('e')
     wait(0.1)
     #while enemigoDetectado == False:
     #atacarFuncion()
