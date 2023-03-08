@@ -45,30 +45,24 @@ def retroceder():
     wait(0.1)
 
     pydirectinput.moveTo(centroPantalla[0] - moverIzquierda, centroPantalla[1] + moverAltura)
-    pydirectinput.mouseDown(button='right')
-    pydirectinput.mouseUp(button='right')
+    pydirectinput.rightClick()
 
 def comprar():
     pydirectinput.moveTo(791, 142)
-    pydirectinput.mouseDown(button='left')
-    pydirectinput.mouseUp(button='left')
+    pydirectinput.rightClick()
     wait(0.5)
     pydirectinput.moveTo(745, 534)
     wait(0.5)
-    pydirectinput.mouseDown(button='right')
-    pydirectinput.mouseUp(button='right')
+    pydirectinput.rightClick()
     wait(0.5)
     pydirectinput.moveTo(791, 142)
-    pydirectinput.mouseDown(button='left')
-    pydirectinput.mouseUp(button='left')
+    pydirectinput.rightClick()
 
 def irAMid():
-    pydirectinput.moveTo(1796, 964)
+    pydirectinput.moveTo(1761, 928)
     wait(0.1)
-    pydirectinput.mouseDown(button='left')
-    pydirectinput.mouseUp(button='left')
-    pydirectinput.mouseDown(button='right')
-    pydirectinput.mouseUp(button='right')
+    pydirectinput.leftClick()
+    pydirectinput.rightClick()
     wait(0.5)
 
 def subirAbilidad():
@@ -81,7 +75,7 @@ def subirAbilidad():
         except Exception as e:
             print(e)
     pydirectinput.moveTo(location)
-    pydirectinput.click()
+    pydirectinput.leftClick()
     location = None
 
 def inGameController(campeonEscogido):
@@ -103,7 +97,7 @@ def inGameController(campeonEscogido):
     jugadorCoordenada = (1, 5)
     listaTorretas = []
     #Point(x=878, y=487) jugador en el centro
-    #py.screenshot().save("hey.png")
+    py.screenshot().save("hey.png")
     img = cv2.imread("hey.png")
 
     #--------------------------------------------------------------conseguir jugador--------------------------------------------------------------
@@ -311,14 +305,16 @@ def inGameController(campeonEscogido):
                 print("nexoOpen")
                 siguienteTorre = (nexo[0], nexo[1])
 
-    if hayTorre == True:
-        print("si hay, vamos a ")
-        print(siguienteTorre)
+    #if hayTorre == True:
+        #print("si hay, vamos a ")
+        #print(siguienteTorre)
     
+    print(aQuienAtacar)
+
     if aQuienAtacar == (0, 0):
         aQuienAtacar = siguienteTorre
 
-
+    print(aQuienAtacar)
     
     #--------------------------------------------------------------detectar si muere--------------------------------------------------------------
     #print(muerto)
@@ -332,13 +328,13 @@ def inGameController(campeonEscogido):
         if aQuienAtacar == (0, 0) and minionsNumeroAliados >= 1:
             print("hit torre")
             pydirectinput.moveTo(hittearTorre[0], hittearTorre[1])
-            pydirectinput.click(button='right')
+            pydirectinput.rightClick()
             wait(0.5)
             #print("kitear")
-            kitear()
-            retroceder()
+            #kitear()
+            #retroceder()
         elif aQuienAtacar == (0, 0) and minionsNumeroAliados == 0:
-            print("vamos a mid")
+            #print("vamos a mid")
             irAMid()
             if config[campeonEscogido] == "mf":
                 pydirectinput.press('w')
@@ -360,16 +356,16 @@ def inGameController(campeonEscogido):
 
             pydirectinput.moveTo(aQuienAtacar[0], aQuienAtacar[1])
             subirAbilidad()
-            pydirectinput.click(button='right')
-            print("kitear")
+            pydirectinput.rightClick()
+            #print("kitear")
             wait(2)
-            kitear()
+            #kitear()
     
     im = cv2.resize(img, (1000, 800))
     im2 = cv2.resize(mask, (1500, 1000))
     #cv2.imshow("webcam", im)
     #cv2.imshow("webcam2", im2)
-    cv2.waitKey()
+    #cv2.waitKey()
     #print("hmm")
     pydirectinput.keyDown('ctrl')
     pydirectinput.press('q')
