@@ -48,15 +48,13 @@ def retroceder():
     pydirectinput.rightClick()
 
 def comprar():
-    pydirectinput.moveTo(791, 142)
+    pydirectinput.press('p')
+    wait(0.5)
+    pydirectinput.moveTo(811, 472)
+    wait(0.1)
     pydirectinput.rightClick()
     wait(0.5)
-    pydirectinput.moveTo(745, 534)
-    wait(0.5)
-    pydirectinput.rightClick()
-    wait(0.5)
-    pydirectinput.moveTo(791, 142)
-    pydirectinput.rightClick()
+    pydirectinput.press('p')
 
 def irAMid():
     pydirectinput.moveTo(1761, 928)
@@ -64,19 +62,6 @@ def irAMid():
     pydirectinput.leftClick()
     pydirectinput.rightClick()
     wait(0.5)
-
-def subirAbilidad():
-    location = None
-    imageSubida = "./imagenes/ingame/levelup.PNG"
-
-    if (location == None):
-        try:
-            location = py.locateOnScreen(imageSubida, grayscale=True, confidence=0.8)
-        except Exception as e:
-            print(e)
-    pydirectinput.moveTo(location)
-    pydirectinput.leftClick()
-    location = None
 
 def inGameController(campeonEscogido):
     print("# STARTING")
@@ -355,7 +340,6 @@ def inGameController(campeonEscogido):
                 pydirectinput.press('q')
 
             pydirectinput.moveTo(aQuienAtacar[0], aQuienAtacar[1])
-            subirAbilidad()
             pydirectinput.rightClick()
             #print("kitear")
             wait(2)
