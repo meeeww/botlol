@@ -166,22 +166,35 @@ def conseguirTorretasMinimapa(img):
 
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+    t1 = (1821, 938)
+    t2 = 1829, 909
+    t3 = (1850, 892)
+    inhib = (1860, 890)
+    nt = (1881, 868)
+    nt2 = (1887, 866)
+    nexo = (1886, 861)
+
     if len(contours) != 0:
         for contour in contours:
             if cv2.contourArea(contour) > 0:
                 x, y, w, h = cv2.boundingRect(contour)
                 cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)#hacemos un rectangulo para ver si detecta la vida
                     
-                #minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
-
-
-t1 = (1821, 938)
-t2 = 1829, 909
-t3 = (1850, 892)
-inhib = (1860, 890)
-nt = (1881, 868)
-nt2 = (1887, 866)
-nexo = (1886, 861)
+                print(t1[0])
+                if x == t1[0] and y == t1[1]:
+                    return "t1"
+                elif x == t2[0] and y == t2[1]:
+                    return "t2"
+                elif x == t3[0] and y == t3[1]:
+                    return "t3"
+                elif x == inhib[0] and y == inhib[1]:
+                    return "inhib"
+                elif x == nt[0] and y == nt[1]:
+                    return "nt"
+                elif x == nt2[0] and y == nt2[1]:
+                    return "nt2"
+                elif x == nexo[0] and y == nexo[1]:
+                    return "nexo"
 
 def conseguirTorretas(torretaCoordenada, img):
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
