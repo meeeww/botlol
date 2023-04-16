@@ -87,9 +87,8 @@ def conseguirEnemigo(enemigosCoordenadas, img):
 
     #if enemigosCoordenadas != (0, 0):
 
-def calcularEnemigos(img, jugadorCoordenada, muerto, enemigosCoordenadas, enemigosDistancias):
+def calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias):
     print(jugadorCoordenada)
-    print(muerto) #hace falta calcular que enemigo esta más cerca para atacarle
     for enemigo in enemigosCoordenadas:
         enemigosDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
         cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 2)
@@ -102,6 +101,58 @@ def calcularEnemigos(img, jugadorCoordenada, muerto, enemigosCoordenadas, enemig
 
     return atacarEnemigo
         
+def conseguirMinionEnemigo(minionsCoordenadas, img):
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorMinionLower, colorMinionUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 10:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 1)#hacemos un rectangulo para ver si detecta la vida
+                minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
+
+    #if enemigosCoordenadas != (0, 0):
+
+def calcularMinionsEnemigos(img, jugadorCoordenada, minionsCoordenadas, minionsDistancias, numeroMinionsEnemigos):
+    print(jugadorCoordenada)
+    for enemigo in minionsCoordenadas:
+        numeroMinionsEnemigos += 1
+        minionsDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
+        cv2.line(img, jugadorCoordenada, enemigo, (0, 255, 0), 1)
+
+    contador = 0
+    for x in minionsDistancias: # sacar la minima distancia
+        if x == min(minionsDistancias):
+            atacarMinion = minionsCoordenadas[contador]
+        contador += 1
+
+    return atacarMinion, numeroMinionsEnemigos
+
+def conseguirMinionAliado(minionsCoordenadas, img):
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorMinionAliadoLower, colorMinionAliadoUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 10:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 1)#hacemos un rectangulo para ver si detecta la vida
+                minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
+
+
+def calcularMinionsAliados(img, jugadorCoordenada, minionsCoordenadas, minionsDistancias, numeroMinionsAliados):
+    print(jugadorCoordenada)
+    for enemigo in minionsCoordenadas:
+        numeroMinionsAliados += 1
+        minionsDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
+        cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 1)
+
+    return numeroMinionsAliados
 
 def inGameController(campeonEscogido):
     print("# STARTING")
@@ -110,21 +161,19 @@ def inGameController(campeonEscogido):
 
     enemigosCoordenadas = []
     enemigosDistancias = []
-
     atacarEnemigo = (0, 0)
 
+    minionsCoordenadasEnemigos = []
+    minionsDistanciasEnemigos = []
+    atacarMinionEnemigo = (0, 0)
+
+    minionsCoordenadasAliados = []
+    minionsDistanciasAliados = []
+
+    numeroMinionsEnemigos = 0
+    numeroMinionsAliados = 0
 
     muerto = True
-    atacar = []
-    farmear = []
-    hittearTorre = []
-    
-    minionsCoordenadas = []
-    enemigosNumero = 0
-    minionsNumero = 0
-    minionsNumeroAliados = 0
-    
-    listaTorretas = []
     #Point(x=878, y=487) jugador en el centro
     #py.screenshot().save("hey2.png")
     img = cv2.imread("hey2.png")
@@ -134,9 +183,22 @@ def inGameController(campeonEscogido):
     #--------------------------------------------------------------conseguir enemigos--------------------------------------------------------------
     conseguirEnemigo(enemigosCoordenadas, img)
     #--------------------------------------------------------------conseguir distancias enemigos--------------------------------------------------------------
-    atacarEnemigo = calcularEnemigos(img, jugadorCoordenada, muerto, enemigosCoordenadas, enemigosDistancias)
+    atacarEnemigo = calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias)
+    ####################################################################################################################################################
+    #--------------------------------------------------------------conseguir minions--------------------------------------------------------------
+    conseguirMinionEnemigo(minionsCoordenadasEnemigos, img)
+    #--------------------------------------------------------------conseguir distancias minions--------------------------------------------------------------
+    atacarMinionEnemigo, numeroMinionsEnemigos = calcularMinionsEnemigos(img, jugadorCoordenada, minionsCoordenadasEnemigos, minionsDistanciasEnemigos, numeroMinionsEnemigos)
+    #--------------------------------------------------------------conseguir minions aliados--------------------------------------------------------------
+    conseguirMinionAliado(minionsCoordenadasAliados, img)
+    #--------------------------------------------------------------conseguir distancias minions aliados--------------------------------------------------------------
+    numeroMinionsAliados = calcularMinionsAliados(img, jugadorCoordenada, minionsCoordenadasAliados, minionsDistanciasAliados, numeroMinionsAliados)
+
 
     print(atacarEnemigo)
+    print(atacarMinionEnemigo)
+    print(numeroMinionsEnemigos)
+    print(numeroMinionsAliados)
 
     cv2.imshow("webcam2", img)
     cv2.waitKey()
