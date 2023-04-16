@@ -87,17 +87,25 @@ def conseguirEnemigo(enemigosCoordenadas, img):
 
     #if enemigosCoordenadas != (0, 0):
 
-def calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias):
-    print(jugadorCoordenada)
+def calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias, campeonEscogido):
     for enemigo in enemigosCoordenadas:
         enemigosDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
         cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 2)
 
     contador = 0
+    distanciaMinima = 0
     for x in enemigosDistancias: # sacar la minima distancia
         if x == min(enemigosDistancias):
+            distanciaMinima = x
             atacarEnemigo = enemigosCoordenadas[contador]
         contador += 1
+
+    print(distanciaMinima)
+    print(type(config[campeonEscogido]["attackRange"]))
+    print(type(distanciaMinima))
+
+    if config[campeonEscogido]["attackRange"] >= distanciaMinima:
+        print("atacar")
 
     return atacarEnemigo
         
@@ -117,7 +125,6 @@ def conseguirMinionEnemigo(minionsCoordenadas, img):
     #if enemigosCoordenadas != (0, 0):
 
 def calcularMinionsEnemigos(img, jugadorCoordenada, minionsCoordenadas, minionsDistancias, numeroMinionsEnemigos):
-    print(jugadorCoordenada)
     for enemigo in minionsCoordenadas:
         numeroMinionsEnemigos += 1
         minionsDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
@@ -146,13 +153,43 @@ def conseguirMinionAliado(minionsCoordenadas, img):
 
 
 def calcularMinionsAliados(img, jugadorCoordenada, minionsCoordenadas, minionsDistancias, numeroMinionsAliados):
-    print(jugadorCoordenada)
     for enemigo in minionsCoordenadas:
         numeroMinionsAliados += 1
         minionsDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
         cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 1)
 
     return numeroMinionsAliados
+
+def conseguirTorretasMinimapa(minionsCoordenadas, img):
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorMinionAliadoLower, colorMinionAliadoUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 10:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 1)#hacemos un rectangulo para ver si detecta la vida
+                minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
+
+def conseguirTorretas(torretaCoordenada, img):
+    image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(image, colorTorretasLower, colorTorretasUpper)
+
+    contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    coordenadaEncontrada = (0, 0)
+    if len(contours) != 0:
+        for contour in contours:
+            if cv2.contourArea(contour) > 10:
+                x, y, w, h = cv2.boundingRect(contour)
+                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)#hacemos un rectangulo para ver si detecta la vida
+                coordenadaEncontrada = (x + 50, y + 150)
+
+    torretaCoordenada = coordenadaEncontrada
+
+    return torretaCoordenada
 
 def inGameController(campeonEscogido):
     print("# STARTING")
@@ -173,6 +210,9 @@ def inGameController(campeonEscogido):
     numeroMinionsEnemigos = 0
     numeroMinionsAliados = 0
 
+
+    torretaCoordenada = (0, 0)
+
     muerto = True
     #Point(x=878, y=487) jugador en el centro
     #py.screenshot().save("hey2.png")
@@ -183,7 +223,8 @@ def inGameController(campeonEscogido):
     #--------------------------------------------------------------conseguir enemigos--------------------------------------------------------------
     conseguirEnemigo(enemigosCoordenadas, img)
     #--------------------------------------------------------------conseguir distancias enemigos--------------------------------------------------------------
-    atacarEnemigo = calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias)
+    atacarEnemigo = calcularEnemigos(img, jugadorCoordenada, enemigosCoordenadas, enemigosDistancias, campeonEscogido)
+    ####################################################################################################################################################
     ####################################################################################################################################################
     #--------------------------------------------------------------conseguir minions--------------------------------------------------------------
     conseguirMinionEnemigo(minionsCoordenadasEnemigos, img)
@@ -193,12 +234,20 @@ def inGameController(campeonEscogido):
     conseguirMinionAliado(minionsCoordenadasAliados, img)
     #--------------------------------------------------------------conseguir distancias minions aliados--------------------------------------------------------------
     numeroMinionsAliados = calcularMinionsAliados(img, jugadorCoordenada, minionsCoordenadasAliados, minionsDistanciasAliados, numeroMinionsAliados)
+    ####################################################################################################################################################
+    ####################################################################################################################################################
+    #--------------------------------------------------------------conseguir torretas minimap--------------------------------------------------------------
+    #conseguirTorretasMinimapa()
+    #--------------------------------------------------------------conseguir torretas--------------------------------------------------------------
+    torretaCoordenada = conseguirTorretas(torretaCoordenada, img)
 
+    cv2.line(img, jugadorCoordenada, torretaCoordenada, (255, 0, 0), 5)
 
     print(atacarEnemigo)
     print(atacarMinionEnemigo)
     print(numeroMinionsEnemigos)
     print(numeroMinionsAliados)
+    print(torretaCoordenada)
 
     cv2.imshow("webcam2", img)
     cv2.waitKey()
