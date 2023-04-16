@@ -214,7 +214,7 @@ def conseguirTorretas(torretaCoordenada, img):
 
     return torretaCoordenada
 
-def inGameController(campeonEscogido):
+def inGameAnalyzer(campeonEscogido):
     print("# STARTING")
 
     jugadorCoordenada = (0, 0)
@@ -276,3 +276,7 @@ def inGameController(campeonEscogido):
 
     cv2.imshow("webcam2", img)
     cv2.waitKey()
+
+
+def inGameController():
+    print("hola")

@@ -69,4 +69,4 @@ time.sleep(0.5)
 #ingame.irAMid()
 #time.sleep(2)
 #for x in range(1):
-ingame.inGameController(campeonEscogido)
+ingame.inGameAnalyzer(campeonEscogido)
