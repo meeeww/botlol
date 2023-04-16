@@ -160,18 +160,28 @@ def calcularMinionsAliados(img, jugadorCoordenada, minionsCoordenadas, minionsDi
 
     return numeroMinionsAliados
 
-def conseguirTorretasMinimapa(minionsCoordenadas, img):
+def conseguirTorretasMinimapa(img):
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(image, colorMinionAliadoLower, colorMinionAliadoUpper)
+    mask = cv2.inRange(image, colorTorretasMinimapLower, colorTorretasMinimapUpper)
 
     contours, hierarchy = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     if len(contours) != 0:
         for contour in contours:
-            if cv2.contourArea(contour) > 10:
+            if cv2.contourArea(contour) > 0:
                 x, y, w, h = cv2.boundingRect(contour)
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 1)#hacemos un rectangulo para ver si detecta la vida
-                minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
+                cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 1)#hacemos un rectangulo para ver si detecta la vida
+                    
+                #minionsCoordenadas.append((x + 20, y + 50))#se añade x + 50, y + 100 para calcular el centro del modelo
+
+
+t1 = (1821, 938)
+t2 = 1829, 909
+t3 = (1850, 892)
+inhib = (1860, 890)
+nt = (1881, 868)
+nt2 = (1887, 866)
+nexo = (1886, 861)
 
 def conseguirTorretas(torretaCoordenada, img):
     image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -210,8 +220,9 @@ def inGameController(campeonEscogido):
     numeroMinionsEnemigos = 0
     numeroMinionsAliados = 0
 
-
     torretaCoordenada = (0, 0)
+
+    siguienteTorreta = "t1"
 
     muerto = True
     #Point(x=878, y=487) jugador en el centro
@@ -237,7 +248,7 @@ def inGameController(campeonEscogido):
     ####################################################################################################################################################
     ####################################################################################################################################################
     #--------------------------------------------------------------conseguir torretas minimap--------------------------------------------------------------
-    #conseguirTorretasMinimapa()
+    siguienteTorreta = conseguirTorretasMinimapa(img)
     #--------------------------------------------------------------conseguir torretas--------------------------------------------------------------
     torretaCoordenada = conseguirTorretas(torretaCoordenada, img)
 
@@ -248,6 +259,7 @@ def inGameController(campeonEscogido):
     print(numeroMinionsEnemigos)
     print(numeroMinionsAliados)
     print(torretaCoordenada)
+    print(siguienteTorreta)
 
     cv2.imshow("webcam2", img)
     cv2.waitKey()
