@@ -86,16 +86,34 @@ def conseguirEnemigo(enemigosCoordenadas, img):
                 enemigosCoordenadas.append((x + 50, y + 100))#se añade x + 50, y + 100 para calcular el centro del modelo
 
     #if enemigosCoordenadas != (0, 0):
+
+def calcularEnemigos(img, jugadorCoordenada, muerto, enemigosCoordenadas, enemigosDistancias):
+    print(jugadorCoordenada)
+    print(muerto) #hace falta calcular que enemigo esta más cerca para atacarle
+    for enemigo in enemigosCoordenadas:
+        enemigosDistancias.append(( math.sqrt(math.pow((jugadorCoordenada[0] - enemigo[0]), 2) + math.pow((jugadorCoordenada[1] - enemigo[1]), 2)) ))
+        cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 2)
+
+    contador = 0
+    for x in enemigosDistancias: # sacar la minima distancia
+        if x == min(enemigosDistancias):
+            atacarEnemigo = enemigosCoordenadas[contador]
+        contador += 1
+
+    return atacarEnemigo
         
 
 def inGameController(campeonEscogido):
     print("# STARTING")
 
     jugadorCoordenada = (0, 0)
+
     enemigosCoordenadas = []
+    enemigosDistancias = []
+
+    atacarEnemigo = (0, 0)
 
 
-    muerteCD = 0
     muerto = True
     atacar = []
     farmear = []
@@ -115,11 +133,10 @@ def inGameController(campeonEscogido):
     jugadorCoordenada, muerto = conseguirJugador(jugadorCoordenada, img)
     #--------------------------------------------------------------conseguir enemigos--------------------------------------------------------------
     conseguirEnemigo(enemigosCoordenadas, img)
-    #--------------------------------------------------------------conseguir distancias--------------------------------------------------------------
-    print(jugadorCoordenada)
-    print(muerto) #hace falta calcular que enemigo esta más cerca para atacarle
-    for enemigo in enemigosCoordenadas:
-        cv2.line(img, jugadorCoordenada, enemigo, (255, 0, 0), 2)
+    #--------------------------------------------------------------conseguir distancias enemigos--------------------------------------------------------------
+    atacarEnemigo = calcularEnemigos(img, jugadorCoordenada, muerto, enemigosCoordenadas, enemigosDistancias)
+
+    print(atacarEnemigo)
 
     cv2.imshow("webcam2", img)
     cv2.waitKey()
