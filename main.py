@@ -17,7 +17,7 @@ colorama.init(autoreset=True)
 
 with open("./src/config.json", "r") as jsonfile:
     config = json.load(jsonfile)
-    print("Read successful")
+    #print("Read successful")
 
 usuario = config["username"]
 contra = config["password"]
@@ -63,10 +63,10 @@ funciones.crearLobby()
 
 campeonEscogido = "mf"
 #IN GAME
-time.sleep(2)
-print(py.position())
-ingame.comprar()
+time.sleep(0.5)
+#print(py.position())
+#ingame.comprar()
 #ingame.irAMid()
-time.sleep(30)
-for x in range(3):
-    ingame.inGameController(campeonEscogido)
+#time.sleep(2)
+#for x in range(1):
+ingame.inGameController(campeonEscogido)
